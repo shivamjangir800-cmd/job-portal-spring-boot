@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Job - Recruiter</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: #111827;
+        }
+
+        .brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .brand span {
+            color: #3b82f6;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 18px;
+            margin: 5px 10px;
+            border-radius: 9px;
+        }
+
+        .sidebar-link:hover {
+            background: #1e293b;
+            color: white;
+        }
+
+        .sidebar-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            padding: 35px;
+        }
+
+        .page-title {
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control,
+        .form-select {
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .required {
+            color: red;
+        }
+
+        .btn-primary {
+            padding: 11px 25px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+
+        <!-- ========================= -->
+        <!-- SIDEBAR -->
+        <!-- ========================= -->
+
+        <div class="col-lg-2 col-md-3 p-0 sidebar">
+
+            <div class="p-4">
+
+                <div class="brand">
+                    Job<span>Portal</span>
+                </div>
+
+                <small class="text-secondary">
+                    Recruiter Panel
+                </small>
+
+            </div>
+
+
+            <a th:href="@{/recruiter/dashboard}"
+               class="sidebar-link">
+
+                <i class="bi bi-grid"></i>
+
+                Dashboard
+
+            </a>
+
+
+            <a th:href="@{/recruiter/jobs}"
+               class="sidebar-link">
+
+                <i class="bi bi-briefcase"></i>
+
+                My Jobs
+
+            </a>
+
+
+            <a th:href="@{/recruiter/jobs/create}"
+               class="sidebar-link active">
+
+                <i class="bi bi-plus-circle"></i>
+
+                Post New Job
+
+            </a>
+
+
+            <a th:href="@{/recruiter/applicants}"
+               class="sidebar-link">
+
+                <i class="bi bi-people"></i>
+
+                Applicants
+
+            </a>
+
+
+            <a th:href="@{/recruiter/profile}"
+               class="sidebar-link">
+
+                <i class="bi bi-person"></i>
+
+                My Profile
+
+            </a>
+
+
+            <div class="px-3 mt-4">
+
+                <form th:action="@{/logout}"
+                      method="post">
+
+                    <button type="submit"
+                            class="btn btn-outline-danger w-100">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Logout
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- MAIN -->
+        <!-- ========================= -->
+
+        <div class="col-lg-10 col-md-9">
+
+            <div class="main">
+
+
+                <!-- HEADER -->
+
+                <div class="mb-4">
+
+                    <h2 class="page-title">
+
+                        Create New Job
+
+                    </h2>
+
+                    <p class="page-subtitle">
+
+                        Add a new job vacancy for candidates.
+
+                    </p>
+
+                </div>
+
+
+                <!-- FORM CARD -->
+
+                <div class="form-card">
+
+
+                    <form th:action="@{/recruiter/jobs/save}"
+                          th:object="${job}"
+                          method="post">
+
+
+                        <!-- JOB TITLE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Job Title
+
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <input type="text"
+                                   th:field="*{title}"
+                                   class="form-control"
+                                   placeholder="Example: Java Backend Developer"
+                                   required>
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Job Description
+
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <textarea th:field="*{description}"
+                                      class="form-control"
+                                      rows="6"
+                                      placeholder="Describe the job responsibilities, requirements and role..."
+                                      required></textarea>
+
+                        </div>
+
+
+                        <div class="row">
+
+
+                            <!-- LOCATION -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label">
+
+                                    Location
+
+                                    <span class="required">*</span>
+
+                                </label>
+
+                                <input type="text"
+                                       th:field="*{location}"
+                                       class="form-control"
+                                       placeholder="Example: Jaipur"
+                                       required>
+
+                            </div>
+
+
+                            <!-- SALARY -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label">
+
+                                    Salary (₹ per year)
+
+                                    <span class="required">*</span>
+
+                                </label>
+
+                                <input type="number"
+                                       th:field="*{salary}"
+                                       class="form-control"
+                                       placeholder="Example: 500000"
+                                       min="0"
+                                       required>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="row">
+
+
+                            <!-- EXPERIENCE -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label">
+
+                                    Experience
+
+                                    <span class="required">*</span>
+
+                                </label>
+
+                                <select th:field="*{experience}"
+                                        class="form-select"
+                                        required>
+
+                                    <option value="">
+                                        Select Experience
+                                    </option>
+
+                                    <option value="Fresher">
+                                        Fresher
+                                    </option>
+
+                                    <option value="0-1 Years">
+                                        0-1 Years
+                                    </option>
+
+                                    <option value="1-2 Years">
+                                        1-2 Years
+                                    </option>
+
+                                    <option value="2-3 Years">
+                                        2-3 Years
+                                    </option>
+
+                                    <option value="3-5 Years">
+                                        3-5 Years
+                                    </option>
+
+                                    <option value="5+ Years">
+                                        5+ Years
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- SKILLS -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label">
+
+                                    Required Skills
+
+                                    <span class="required">*</span>
+
+                                </label>
+
+                                <input type="text"
+                                       th:field="*{skills}"
+                                       class="form-control"
+                                       placeholder="Java, Spring Boot, SQL, REST API"
+                                       required>
+
+                                <small class="text-muted">
+
+                                    Separate skills using commas.
+
+                                </small>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Job Status
+
+                            </label>
+
+                            <select th:field="*{status}"
+                                    class="form-select">
+
+                                <option value="ACTIVE">
+                                    Active
+                                </option>
+
+                                <option value="CLOSED">
+                                    Closed
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="d-flex gap-2">
+
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                Publish Job
+
+                            </button>
+
+
+                            <a th:href="@{/recruiter/dashboard}"
+                               class="btn btn-outline-secondary">
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

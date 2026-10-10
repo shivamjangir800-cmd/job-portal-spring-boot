@@ -1,0 +1,848 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Recruiter Profile | JobPortal</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body {
+            background: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Sidebar */
+
+        .sidebar {
+            min-height: 100vh;
+            background: #111827;
+            position: sticky;
+            top: 0;
+        }
+
+        .brand {
+            color: white;
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .brand span {
+            color: #4f8cff;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 18px;
+            margin: 5px 10px;
+            border-radius: 9px;
+            transition: 0.2s;
+        }
+
+        .sidebar-link:hover {
+            background: #1e293b;
+            color: white;
+        }
+
+        .sidebar-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* Main */
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .top-title h2 {
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .top-title p {
+            color: #64748b;
+        }
+
+        /* Profile Header */
+
+        .profile-header {
+            background: linear-gradient(120deg, #2563eb, #4f46e5);
+            border-radius: 18px;
+            padding: 35px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            right: -60px;
+            top: -70px;
+        }
+
+        .profile-avatar {
+            width: 105px;
+            height: 105px;
+            background: white;
+            color: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 43px;
+            font-weight: 700;
+            border: 5px solid rgba(255,255,255,0.35);
+        }
+
+        .profile-name {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .profile-role {
+            color: #dbeafe;
+        }
+
+        .verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        /* Cards */
+
+        .card-box {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            padding: 25px;
+            height: 100%;
+        }
+
+        .section-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        /* Info */
+
+        .info-item {
+            margin-bottom: 18px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Stats */
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 20px;
+        }
+
+        .stat-number {
+            font-size: 25px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Skills */
+
+        .skill {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 20px;
+            padding: 8px 14px;
+            margin: 4px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Company */
+
+        .company-logo {
+            width: 65px;
+            height: 65px;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        /* Buttons */
+
+        .btn-main {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        .btn-main:hover {
+            background: #1d4ed8;
+            color: white;
+        }
+
+        /* Responsive */
+
+        @media(max-width: 768px) {
+
+            .sidebar {
+                min-height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                padding: 18px;
+            }
+
+            .profile-header {
+                padding: 25px;
+            }
+
+            .profile-name {
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <div class="col-lg-2 col-md-3 p-0 sidebar">
+
+            <div class="p-4">
+
+                <div class="brand">
+                    Job<span>Portal</span>
+                </div>
+
+                <small class="text-secondary">
+                    Recruiter Dashboard
+                </small>
+
+            </div>
+
+
+            <a th:href="@{/recruiter/dashboard}"
+               class="sidebar-link">
+
+                <i class="bi bi-grid"></i>
+
+                Dashboard
+
+            </a>
+
+
+            <a th:href="@{/recruiter/jobs}"
+               class="sidebar-link">
+
+                <i class="bi bi-briefcase"></i>
+
+                My Jobs
+
+            </a>
+
+
+            <a th:href="@{/recruiter/jobs/create}"
+               class="sidebar-link">
+
+                <i class="bi bi-plus-circle"></i>
+
+                Post a Job
+
+            </a>
+
+
+            <a th:href="@{/recruiter/applicants}"
+               class="sidebar-link">
+
+                <i class="bi bi-people"></i>
+
+                Applicants
+
+            </a>
+
+
+            <a th:href="@{/recruiter/profile}"
+               class="sidebar-link active">
+
+                <i class="bi bi-person"></i>
+
+                My Profile
+
+            </a>
+
+
+            <div class="px-3 mt-4">
+
+                <form th:action="@{/logout}"
+                      method="post">
+
+                    <button type="submit"
+                            class="btn btn-outline-danger w-100">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Logout
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <div class="col-lg-10 col-md-9">
+
+            <div class="main-content">
+
+
+                <!-- TOP TITLE -->
+
+                <div class="top-title mb-4">
+
+                    <h2>
+                        Recruiter Profile
+                    </h2>
+
+                    <p>
+                        Manage your recruiter profile and company information.
+                    </p>
+
+                </div>
+
+
+                <!-- ================= PROFILE HEADER ================= -->
+
+                <div class="profile-header mb-4">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-md-8">
+
+                            <div class="d-flex align-items-center gap-4">
+
+                                <!-- Avatar -->
+
+                                <div class="profile-avatar">
+
+                                    <span th:if="${user != null}"
+                                          th:text="${#strings.substring(user.name,0,1).toUpperCase()}">
+                                        R
+                                    </span>
+
+                                    <span th:unless="${user != null}">
+                                        R
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        <h1 class="profile-name mb-0"
+                                            th:text="${user != null ? user.name : 'Recruiter'}">
+
+                                            Recruiter Name
+
+                                        </h1>
+
+                                    </div>
+
+
+                                    <p class="profile-role mb-2">
+
+                                        Recruiter / Hiring Manager
+
+                                    </p>
+
+
+                                    <span class="verified">
+
+                                        <i class="bi bi-patch-check-fill"></i>
+
+                                        Verified Recruiter
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        
+                    <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                        <form th:action="@{/recruiter/profile/edit}" method="get">
+                            <button type="submit" class="btn btn-light">
+                                <i class="bi bi-pencil"></i>
+                                Edit Profiles
+                            </button>
+                        </form>
+                    </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= STATISTICS ================= -->
+
+                <div class="row g-3 mb-4">
+
+                    <div class="col-md-3">
+
+                        <div class="stat-card">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <div class="stat-number"
+                                        th:text="${jobsposted}">
+                                        12
+                                    </div>
+
+                                    <div class="stat-label">
+                                        Jobs Posted
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-briefcase"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <div class="stat-card">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <div class="stat-number"
+                                        th:text="${totalApplications}">
+                                        86
+                                    </div>
+
+                                    <div class="stat-label">
+                                        Applications
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-file-earmark-text"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <div class="stat-card">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <div class="stat-number"
+                                        th:text="${candidatehired}">
+                                        8
+                                    </div>
+
+                                    <div class="stat-label">
+                                        Candidates Hired
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-person-check"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <div class="stat-card">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <div class="stat-number"
+                                        th:text="${activejobs}">
+                                        4
+                                    </div>
+
+                                    <div class="stat-label">
+                                        Active Jobs
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-lightning"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= INFORMATION ================= -->
+
+                <div class="row g-4 mb-4">
+
+
+                    <!-- PERSONAL INFORMATION -->
+
+                    <div class="col-lg-6">
+
+                        <div class="card-box">
+
+                            <div class="section-title">
+
+                                <i class="bi bi-person-circle me-2"></i>
+
+                                Personal Information
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Full Name
+                                </div>
+
+                                <div class="info-value"
+                                     th:text="${user != null ? user.name : 'Not available'}">
+
+                                    Recruiter Name
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Email Address
+                                </div>
+
+                                <div class="info-value"
+                                     th:text="${user != null ? user.email : 'Not available'}">
+
+                                    recruiter@example.com
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <div class="info-label">
+                                    Account Type
+                                </div>
+
+                                <div class="info-value"
+                                     th:text="${user != null ? user.department : 'RECRUITER'}">
+
+                                    RECRUITER
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="info-item mb-0">
+
+                                <div class="info-label">
+                                    Account Status
+                                </div>
+
+                                <div class="text-success fw-bold">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Active
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMPANY INFORMATION -->
+
+                            
+
+                </div>
+
+
+                <!-- ================= SKILLS + ABOUT ================= -->
+
+                <div class="row g-4 mb-4">
+
+
+                    <!-- RECRUITMENT SKILLS -->
+
+                    <div class="col-lg-6">
+
+                        <div class="card-box">
+
+                            <div class="section-title">
+
+                                <i class="bi bi-stars me-2"></i>
+
+                                Recruitment Skills
+
+                            </div>
+
+
+                            <span class="skill">
+                                Talent Acquisition
+                            </span>
+
+                            <span class="skill">
+                                Technical Hiring
+                            </span>
+
+                            <span class="skill">
+                                Interviewing
+                            </span>
+
+                            <span class="skill">
+                                Candidate Screening
+                            </span>
+
+                            <span class="skill">
+                                Recruitment
+                            </span>
+
+                            <span class="skill">
+                                HR Management
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ABOUT -->
+
+                    <div class="col-lg-6">
+
+                        <div class="card-box">
+
+                            <div class="section-title">
+
+                                <i class="bi bi-info-circle me-2"></i>
+
+                                About Recruiter
+
+                            </div>
+
+
+                            <p class="text-muted mb-0">
+
+                                Responsible for identifying talented candidates,
+                                managing job openings, reviewing applications
+                                and connecting suitable candidates with
+                                available opportunities.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= QUICK ACTIONS ================= -->
+
+                <div class="card-box">
+
+                    <div class="section-title">
+
+                        <i class="bi bi-lightning-charge me-2"></i>
+
+                        Quick Actions
+
+                    </div>
+
+
+                    <div class="row g-3">
+
+
+                        <div class="col-md-4">
+
+                            <a th:href="@{/recruiter/jobs/create}"
+                               class="btn btn-primary w-100 py-3">
+
+                                <i class="bi bi-plus-circle me-2"></i>
+
+                                Post New Job
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <a th:href="@{/recruiter/jobs}"
+                               class="btn btn-outline-primary w-100 py-3">
+
+                                <i class="bi bi-briefcase me-2"></i>
+
+                                Manage Jobs
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <a th:href="@{/recruiter/applicants}"
+                               class="btn btn-outline-success w-100 py-3">
+
+                                <i class="bi bi-people me-2"></i>
+
+                                View Applicants
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

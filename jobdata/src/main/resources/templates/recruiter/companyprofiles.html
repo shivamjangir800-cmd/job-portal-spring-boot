@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Companies</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0d6efd, #6610f2);
+            color: white;
+            border-radius: 18px;
+        }
+
+        .company-card {
+            border: none;
+            border-radius: 18px;
+            transition: 0.25s;
+        }
+
+        .company-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.10);
+        }
+
+        .company-logo {
+            width: 65px;
+            height: 65px;
+            border-radius: 15px;
+            background: #e9f2ff;
+            color: #0d6efd;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .company-name {
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .company-info {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .btn-view {
+            border-radius: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container py-5">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="page-header p-4 p-md-5 mb-5 shadow-sm">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h1 class="fw-bold mb-2">
+                    My Companies
+                </h1>
+
+                <p class="mb-0">
+                    Manage your company information and profiles.
+                </p>
+
+            </div>
+
+            <div>
+
+                <a href="/recruiter/dashboard"
+                   class="btn btn-light">
+                    ← Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= COMPANY LIST ================= -->
+
+    <div class="row g-4">
+
+        <!--
+            companies = List<company>
+
+            company = current company
+        -->
+
+        <div class="col-md-6 col-lg-4"
+             th:each="company : ${companies}">
+
+            <div class="card company-card shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <!-- Company Header -->
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        <!-- Company Initial -->
+
+                        <div class="company-logo me-3"
+                             th:text="${#strings.substring(company.name, 0, 1).toUpperCase()}">
+                            C
+                        </div>
+
+                        <div>
+
+                            <h4 class="company-name mb-1"
+                                th:text="${company.name}">
+                                Company Name
+                            </h4>
+
+                            <span class="badge bg-primary"
+                                  th:text="${company.industry ?: 'Industry not specified'}">
+                                IT
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Company Description -->
+
+                    <p class="company-info mb-4"
+                       th:if="${company.description != null and !company.description.isEmpty()}"
+                       th:text="${company.description}">
+                        Company description
+                    </p>
+
+                    <p class="company-info mb-4"
+                       th:if="${company.description == null or company.description.isEmpty()}">
+                        No company description available.
+                    </p>
+
+
+                    <!-- Location -->
+
+                    <div class="d-flex align-items-center mb-2">
+
+                        <span class="me-2">
+                            📍
+                        </span>
+
+                        <span class="company-info"
+                              th:text="${company.location ?: 'Location not specified'}">
+                            Jaipur
+                        </span>
+
+                    </div>
+
+
+                    <!-- Founded -->
+
+                    <div class="d-flex align-items-center mb-2">
+
+                        <span class="me-2">
+                            📅
+                        </span>
+
+                        <span class="company-info"
+                              th:text="${company.foundedYear ?: 'Not specified'}">
+                            2020
+                        </span>
+
+                    </div>
+
+
+                    <!-- Website -->
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        <span class="me-2">
+                            🌐
+                        </span>
+
+                        <span class="company-info">
+
+                            <a th:if="${company.website != null and !company.website.isEmpty()}"
+                               th:href="${company.website}"
+                               target="_blank">
+                                Visit Website
+                            </a>
+
+                            <span th:if="${company.website == null or company.website.isEmpty()}">
+                                Website not added
+                            </span>
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Buttons -->
+
+                    <div class="d-flex gap-2">
+
+                        <!-- View -->
+
+                        <a th:href="@{/recruiter/company/profile/{id}(id=${company.id})}"
+                           class="btn btn-primary btn-view flex-grow-1">
+                            👁 View Details
+                        </a>
+
+
+                        <!-- Edit -->
+
+                        <a th:href="@{/recruiter/company/edit/{id}(id=${company.id})}"
+                           class="btn btn-outline-secondary btn-view">
+                            ✏️
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= NO COMPANY ================= -->
+
+    <div th:if="${companies == null or companies.isEmpty()}"
+         class="text-center py-5">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-5">
+
+                <div style="font-size: 60px;">
+                    🏢
+                </div>
+
+                <h3 class="mt-3">
+                    No Companies Found
+                </h3>
+
+                <p class="text-muted">
+                    You haven't created a company profile yet.
+                </p>
+
+                <a href="/recruiter/company/create"
+                   class="btn btn-primary">
+                    ➕ Create Company
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>

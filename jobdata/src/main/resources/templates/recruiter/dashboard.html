@@ -1,0 +1,942 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Recruiter Dashboard</title>
+
+    <!-- Bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* SIDEBAR */
+
+        .sidebar {
+            min-height: 100vh;
+            background: #111827;
+        }
+
+
+        .brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+
+        .brand span {
+            color: #3b82f6;
+        }
+
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            padding: 13px 18px;
+
+            margin: 5px 10px;
+
+            border-radius: 9px;
+
+            transition: 0.2s;
+        }
+
+
+        .sidebar-link:hover {
+            background: #1e293b;
+            color: white;
+        }
+
+
+        .sidebar-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+
+        /* MAIN */
+
+        .main {
+            padding: 30px;
+        }
+
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+
+        .welcome h2 {
+            font-weight: 700;
+        }
+
+
+        .welcome p {
+            color: #64748b;
+        }
+
+
+        /* STAT CARD */
+
+        .stat-card {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 22px;
+
+            border: 1px solid #e5e7eb;
+
+            height: 100%;
+        }
+
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 12px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 23px;
+        }
+
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        /* CARD */
+
+        .dashboard-card {
+            background: white;
+
+            border-radius: 15px;
+
+            border: 1px solid #e5e7eb;
+
+            padding: 25px;
+        }
+
+
+        .section-title {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+
+        /* JOB CARD */
+
+        .job-card {
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .job-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+
+        .job-info {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        .status {
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        .active {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+
+        .closed {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+
+        /* QUICK ACTION */
+
+        .quick-card {
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            color: #111827;
+
+            display: block;
+
+            transition: 0.2s;
+        }
+
+
+        .quick-card:hover {
+            transform: translateY(-3px);
+
+            border-color: #2563eb;
+        }
+
+
+        .quick-icon {
+            font-size: 30px;
+
+            color: #2563eb;
+
+            margin-bottom: 10px;
+        }
+
+
+        @media(max-width: 768px) {
+
+            .main {
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container-fluid">
+
+    <div class="row">
+
+
+        <!-- ================================= -->
+        <!-- SIDEBAR -->
+        <!-- ================================= -->
+
+        <div class="col-lg-2 col-md-3 p-0 sidebar">
+
+
+            <div class="p-4">
+
+                <div class="brand">
+
+                    Job<span>Portal</span>
+
+                </div>
+
+                <small class="text-secondary">
+
+                    Recruiter Panel
+
+                </small>
+
+            </div>
+
+
+            <!-- Dashboard -->
+
+            <a th:href="@{/recruiter/dashboard}"
+               class="sidebar-link active">
+
+                <i class="bi bi-grid"></i>
+
+                Dashboard
+
+            </a>
+
+
+            <!-- Jobs -->
+
+            <a th:href="@{/recruiter/jobs}"
+               class="sidebar-link">
+
+                <i class="bi bi-briefcase"></i>
+
+                My Jobs
+
+            </a>
+
+            <a th:href="@{/recruiter/company/create}"
+                class="sidebar-link">
+                    <i class="bi bi-briefcase"></i>
+
+                    🏢 Create Company Profile
+            </a>
+
+           <a th:href="@{/recruiter/company}"
+                class="sidebar-link">
+                <i class="bi bi-briefcase"></i>
+                    🏢 My Company
+            </a>
+
+            <!-- Create Job -->
+
+            <a th:href="@{/recruiter/jobs/create}"
+               class="sidebar-link">
+
+                <i class="bi bi-plus-circle"></i>
+
+                Post New Job
+
+            </a>
+
+
+            <!-- Applicants -->
+
+            <a th:href="@{/recruiter/applicants}"
+               class="sidebar-link">
+
+                <i class="bi bi-people"></i>
+
+                Applicants
+
+            </a>
+
+
+            <!-- Profile -->
+
+            <a th:href="@{/recruiter/profile}"
+               class="sidebar-link">
+
+                <i class="bi bi-person"></i>
+
+                My Profile
+
+            </a>
+
+
+            <!-- Logout -->
+
+            <div class="px-3 mt-4">
+
+                <form th:action="@{/logout}"
+                      method="post">
+
+                    <button type="submit"
+                            class="btn btn-outline-danger w-100">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Logout
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- MAIN CONTENT -->
+        <!-- ================================= -->
+
+        <div class="col-lg-10 col-md-9">
+
+
+            <div class="main">
+
+
+                <!-- ================================= -->
+                <!-- WELCOME -->
+                <!-- ================================= -->
+
+                <div class="welcome">
+
+                    <h2>
+
+                        Welcome back,
+
+                        <span th:text="${user.name}">
+                            Recruiter
+                        </span>
+
+                        👋
+
+                    </h2>
+
+
+                    <p>
+
+                        Manage your jobs and applications
+                        from your recruiter dashboard.
+
+                    </p>
+
+                </div>
+
+
+                <!-- ================================= -->
+                <!-- STATISTICS -->
+                <!-- ================================= -->
+
+                <div class="row g-3 mb-4">
+
+
+                    <!-- TOTAL JOBS -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <div class="stat-card">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-center">
+
+                                <div>
+
+                                    <div class="stat-number"
+                                         th:text="${totalJobs}">
+
+                                        0
+
+                                    </div>
+
+                                    <div class="stat-label">
+
+                                        Total Jobs
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-briefcase"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIVE JOBS -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <div class="stat-card">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-center">
+
+                                <div>
+
+                                    <div class="stat-number"
+                                         th:text="${activeJobs}">
+
+                                        0
+
+                                    </div>
+
+                                    <div class="stat-label">
+
+                                        Active Jobs
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-lightning"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- APPLICATIONS -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <div class="stat-card">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-center">
+
+                                <div>
+
+                                    <div class="stat-number"
+                                         th:text="${totalApplications}">
+
+                                        0
+
+                                    </div>
+
+                                    <div class="stat-label">
+
+                                        Applications
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-file-earmark-text"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACCEPTED -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <div class="stat-card">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-center">
+
+                                <div>
+
+                                    <div class="stat-number"
+                                         th:text="${acceptedApplications}">
+
+                                        0
+
+                                    </div>
+
+                                    <div class="stat-label">
+
+                                        Accepted
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="stat-icon">
+
+                                    <i class="bi bi-person-check"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================= -->
+                <!-- QUICK ACTIONS -->
+                <!-- ================================= -->
+
+                <div class="dashboard-card mb-4">
+
+
+                    <div class="section-title mb-3">
+
+                        Quick Actions
+
+                    </div>
+
+
+                    <div class="row g-3">
+
+
+                        <div class="col-md-4">
+
+                            <a th:href="@{/recruiter/jobs/create}"
+                               class="quick-card">
+
+                                <div class="quick-icon">
+
+                                    <i class="bi bi-plus-circle"></i>
+
+                                </div>
+
+                                <h5>
+
+                                    Post New Job
+
+                                </h5>
+
+                                <p class="text-muted mb-0">
+
+                                    Create a new vacancy.
+
+                                </p>
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <a th:href="@{/recruiter/jobs}"
+                               class="quick-card">
+
+                                <div class="quick-icon">
+
+                                    <i class="bi bi-briefcase"></i>
+
+                                </div>
+
+                                <h5>
+
+                                    Manage Jobs
+
+                                </h5>
+
+                                <p class="text-muted mb-0">
+
+                                    View and edit your jobs.
+
+                                </p>
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <a th:href="@{/recruiter/applicants}"
+                               class="quick-card">
+
+                                <div class="quick-icon">
+
+                                    <i class="bi bi-people"></i>
+
+                                </div>
+
+                                <h5>
+
+                                    View Applicants
+
+                                </h5>
+
+                                <p class="text-muted mb-0">
+
+                                    Review candidate applications.
+
+                                </p>
+
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================= -->
+                <!-- MY JOBS -->
+                <!-- ================================= -->
+
+                <div class="dashboard-card">
+
+
+                    <div class="d-flex
+                                justify-content-between
+                                align-items-center
+                                mb-4">
+
+                        <div class="section-title">
+
+                            My Recent Jobs
+
+                        </div>
+
+
+                        <a th:href="@{/recruiter/jobs}"
+                           class="btn btn-outline-primary btn-sm">
+
+                            View All
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- JOB LIST -->
+
+                    <div th:if="${jobs != null and !jobs.isEmpty()}">
+
+
+                        <div th:each="job : ${jobs}"
+                             class="job-card">
+
+
+                            <div class="row align-items-center">
+
+
+                                <!-- JOB -->
+
+                                <div class="col-md-5">
+
+                                    <div class="job-title"
+                                         th:text="${job.title}">
+
+                                        Java Developer
+
+                                    </div>
+
+
+                                    <div class="job-info mt-2">
+
+                                        <i class="bi bi-geo-alt"></i>
+
+                                        <span th:text="${job.location}">
+                                            Jaipur
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- SALARY -->
+
+                                <div class="col-md-2">
+
+                                    <div class="job-info">
+
+                                        Salary
+
+                                    </div>
+
+                                    <strong>
+
+                                        ₹<span th:text="${job.salary}">
+                                            500000
+                                        </span>
+
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- EXPERIENCE -->
+
+                                <div class="col-md-2">
+
+                                    <div class="job-info">
+
+                                        Experience
+
+                                    </div>
+
+                                    <strong
+                                            th:text="${job.experience}">
+
+                                        Fresher
+
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- APPLICATIONS -->
+
+                                <div class="col-md-2">
+
+                                    <div class="job-info">
+
+                                        Applications
+
+                                    </div>
+
+                                    <strong
+                                            th:text="${applicationCounts[job.id]}">
+
+                                        0
+
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- STATUS -->
+
+                                <div class="col-md-1">
+
+                                    <span class="status active"
+                                          th:if="${job.status != null and job.status.equalsIgnoreCase('ACTIVE')}">
+
+                                        Active
+
+                                    </span>
+
+
+                                    <span class="status closed"
+                                          th:unless="${job.status != null and job.status.equalsIgnoreCase('ACTIVE')}">
+
+                                        Closed
+
+                                    </span>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- SKILLS -->
+
+                            <div class="job-info mt-3">
+
+                                <i class="bi bi-code-slash"></i>
+
+                                <span th:text="${job.skills}">
+
+                                    Java, Spring Boot, SQL
+
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- NO JOBS -->
+
+                    <div th:if="${jobs == null or jobs.isEmpty()}"
+                         class="text-center py-5">
+
+                        <i class="bi bi-briefcase"
+                           style="font-size:50px;color:#94a3b8;">
+                        </i>
+
+
+                        <h5 class="mt-3">
+
+                            No Jobs Posted Yet
+
+                        </h5>
+
+
+                        <p class="text-muted">
+
+                            Start by creating your first job.
+
+                        </p>
+
+
+                        <a th:href="@{/recruiter/jobs/create}"
+                           class="btn btn-primary">
+
+                            <i class="bi bi-plus-circle"></i>
+
+                            Post Your First Job
+
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

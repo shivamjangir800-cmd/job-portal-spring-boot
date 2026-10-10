@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Candidate Profile</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+
+        body {
+            background-color: #f5f7fb;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: #212529;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 13px 20px;
+        }
+
+        .sidebar a:hover {
+            background-color: #343a40;
+        }
+
+        .sidebar .active {
+            background-color: #0d6efd;
+        }
+
+        .profile-card {
+            border: none;
+            border-radius: 15px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #0d6efd, #6610f2);
+            color: white;
+            padding: 35px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: white;
+            color: #0d6efd;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 40px;
+            font-weight: bold;
+
+            margin: auto;
+        }
+
+        .info-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .info-title {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .info-value {
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <div class="col-md-3 col-lg-2 p-0 sidebar">
+
+            <div class="text-center p-4">
+
+                <h4 class="text-white">
+                    JobPortal
+                </h4>
+
+                <small class="text-secondary">
+                    Candidate Panel
+                </small>
+
+            </div>
+
+            <hr class="text-secondary">
+
+
+            <a th:href="@{/candidate/dashboard}">
+                🏠 Dashboard
+            </a>
+
+
+            <a th:href="@{/candidate/jobs}">
+                🔍 Find Jobs
+            </a>
+
+
+            <a th:href="@{/candidate/applications}">
+                📄 My Applications
+            </a>
+
+
+            <a th:href="@{/candidate/profile}"
+               class="active">
+
+                👤 My Profile
+
+            </a>
+
+
+            <hr class="text-secondary">
+
+
+            <!-- LOGOUT -->
+
+            <form th:action="@{/logout}"
+                  method="post"
+                  class="px-3">
+
+                <button
+                    type="submit"
+                    class="btn btn-danger w-100">
+
+                    Logout
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <div class="col-md-9 col-lg-10">
+
+
+            <!-- NAVBAR -->
+
+            <nav class="navbar bg-white shadow-sm px-4">
+
+                <span class="navbar-brand fw-bold">
+                    Candidate Profile
+                </span>
+
+                <span class="text-muted">
+                    My Account
+                </span>
+
+            </nav>
+
+
+            <!-- PAGE CONTENT -->
+
+            <div class="p-4">
+
+
+                <!-- PROFILE CARD -->
+
+                <div class="card profile-card shadow-sm">
+
+
+                    <!-- PROFILE HEADER -->
+
+                    <div class="profile-header text-center">
+
+
+                        <div class="profile-image">
+
+                            <span
+                                th:text="${user != null ? #strings.substring(user.name, 0, 1).toUpperCase() : 'U'}">
+
+                                U
+
+                            </span>
+
+                        </div>
+
+
+                        <h2 class="mt-3"
+                            th:text="${user != null ? user.name : 'Candidate'}">
+
+                            Candidate
+
+                        </h2>
+
+
+                        <p class="mb-0">
+                            Job Seeker
+                        </p>
+
+                    </div>
+
+
+                    <!-- PROFILE BODY -->
+
+                    <div class="card-body p-4">
+
+
+                        <!-- PERSONAL INFORMATION -->
+
+                        <h4 class="mb-4">
+                            Personal Information
+                        </h4>
+
+
+                        <div class="row g-4">
+
+
+                            <!-- NAME -->
+
+                            <div class="col-md-6">
+
+                                <div class="info-box">
+
+                                    <div class="info-title">
+                                        Full Name
+                                    </div>
+
+                                    <div class="info-value"
+                                         th:text="${user != null ? user.name : 'Not available'}">
+
+                                        Candidate Name
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- EMAIL -->
+
+                            <div class="col-md-6">
+
+                                <div class="info-box">
+
+                                    <div class="info-title">
+                                        Email Address
+                                    </div>
+
+                                    <div class="info-value"
+                                         th:text="${user != null ? user.email : 'Not available'}">
+
+                                        email@example.com
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ROLE -->
+
+                            <div class="col-md-6">
+
+                                <div class="info-box">
+
+                                    <div class="info-title">
+                                        Account Type
+                                    </div>
+
+                                    <div class="info-value"
+                                         th:text="${user != null ? user.department : 'CANDIDATE'}">
+
+                                        CANDIDATE
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PASSWORD -->
+
+                            <div class="col-md-6">
+
+                                <div class="info-box">
+
+                                    <div class="info-title">
+                                        Password
+                                    </div>
+
+                                    <div class="info-value">
+                                        ********
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <hr class="my-5">
+
+
+                        <!-- PROFESSIONAL INFORMATION -->
+
+                        <h4 class="mb-4">
+                            Professional Information
+                        </h4>
+
+
+                        <div class="row g-4">
+
+
+                            <div class="col-md-6">
+
+                                <div class="info-box">
+
+                                    <div class="info-title">
+                                        Skills
+                                    </div>
+
+                                    <div class="info-value">
+                                        Java, Spring Boot, SQL
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="info-box">
+
+                                    <div class="info-title">
+                                        Experience
+                                    </div>
+
+                                    <div class="info-value">
+                                        Fresher
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="info-box">
+
+                                    <div class="info-title">
+                                        Education
+                                    </div>
+
+                                    <div class="info-value">
+                                        Bachelor's Degree
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="info-box">
+
+                                    <div class="info-title">
+                                        Location
+                                    </div>
+
+                                    <div class="info-value">
+                                        Jaipur, Rajasthan
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <hr class="my-5">
+
+
+
+                        <!-- ACTION BUTTONS -->
+
+                        <div class="mt-4">
+
+
+                            <a th:href="@{/candidate/dashboard}"
+                               class="btn btn-secondary ms-2">
+
+                                Back to Dashboard
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>

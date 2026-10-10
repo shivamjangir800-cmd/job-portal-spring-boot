@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${company.name + ' | Company Details'}">
+        Company Details
+    </title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .top-header {
+            background: linear-gradient(135deg, #0d6efd, #6610f2);
+            color: white;
+            border-radius: 20px;
+        }
+
+        .company-logo {
+            width: 100px;
+            height: 100px;
+
+            background: white;
+            color: #0d6efd;
+
+            border-radius: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 42px;
+            font-weight: bold;
+
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .info-card {
+            border: none;
+            border-radius: 16px;
+        }
+
+        .info-item {
+            padding: 18px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .description {
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .action-btn {
+            border-radius: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container py-5">
+
+    <!-- ================= BACK ================= -->
+
+    <div class="mb-4">
+
+        <a href="/recruiter/companies"
+           class="btn btn-outline-secondary">
+            ← Back to Companies
+        </a>
+
+    </div>
+
+
+    <!-- ================= COMPANY HEADER ================= -->
+
+    <div class="top-header p-4 p-md-5 mb-4 shadow-sm">
+
+        <div class="d-flex flex-column flex-md-row align-items-md-center">
+
+            <!-- Company Logo / Initial -->
+
+            <div class="company-logo me-md-4 mb-3 mb-md-0"
+                 th:text="${#strings.substring(company.name, 0, 1).toUpperCase()}">
+                C
+            </div>
+
+
+            <!-- Company Name -->
+
+            <div class="flex-grow-1">
+
+                <h1 class="fw-bold mb-2"
+                    th:text="${company.name}">
+                    Company Name
+                </h1>
+
+                <p class="mb-2"
+                   th:if="${company.industry != null}"
+                   th:text="${company.industry}">
+                    Information Technology
+                </p>
+
+                <p class="mb-0"
+                   th:if="${company.location != null}"
+                   th:text="|📍 ${company.location}|">
+                    📍 Jaipur
+                </p>
+
+            </div>
+
+
+            <!-- Edit -->
+
+            <div class="mt-3 mt-md-0">
+
+                <a th:href="@{/recruiter/company/edit/{id}(id=${company.id})}"
+                   class="btn btn-light action-btn">
+
+                    ✏️ Edit Company
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ABOUT ================= -->
+
+    <div class="card info-card shadow-sm mb-4">
+
+        <div class="card-body p-4 p-md-5">
+
+            <h3 class="fw-bold mb-3">
+                About Company
+            </h3>
+
+            <p class="description mb-0"
+               th:if="${company.description != null
+                       and !company.description.isEmpty()}"
+               th:text="${company.description}">
+
+                Company description goes here.
+
+            </p>
+
+            <p class="text-muted mb-0"
+               th:if="${company.description == null
+                       or company.description.isEmpty()}">
+
+                No company description has been added yet.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= COMPANY INFORMATION ================= -->
+
+    <div class="card info-card shadow-sm mb-4">
+
+        <div class="card-body p-4 p-md-5">
+
+            <h3 class="fw-bold mb-4">
+                Company Information
+            </h3>
+
+
+            <div class="row g-3">
+
+
+                <!-- Company Name -->
+
+                <div class="col-md-6">
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Company Name
+                        </div>
+
+                        <div class="info-value"
+                             th:text="${company.name}">
+                            Company Name
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Industry -->
+
+                <div class="col-md-6">
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Industry
+                        </div>
+
+                        <div class="info-value"
+                             th:text="${company.industry ?: 'Not specified'}">
+                            Information Technology
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Location -->
+
+                <div class="col-md-6">
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Location
+                        </div>
+
+                        <div class="info-value"
+                             th:text="${company.location ?: 'Not specified'}">
+                            Jaipur
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Founded Year -->
+
+                <div class="col-md-6">
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Founded Year
+                        </div>
+
+                        <div class="info-value"
+                             th:text="${company.foundedYear ?: 'Not specified'}">
+                            2020
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Website -->
+
+                <div class="col-md-6">
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Website
+                        </div>
+
+                        <div class="info-value">
+
+                            <a th:if="${company.website != null
+                                      and !company.website.isEmpty()}"
+                               th:href="${company.website}"
+                               target="_blank"
+                               class="text-decoration-none">
+
+                                🌐 Visit Website
+
+                            </a>
+
+                            <span th:if="${company.website == null
+                                          or company.website.isEmpty()}"
+                                  class="text-muted">
+
+                                Not specified
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Company ID -->
+
+                <div class="col-md-6">
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Company ID
+                        </div>
+
+                        <div class="info-value"
+                             th:text="${company.id}">
+                            1
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ACTIONS ================= -->
+
+    <div class="card info-card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-3">
+                Company Actions
+            </h4>
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <!-- Edit -->
+
+                <a th:href="@{/recruiter/company/edit/{id}(id=${company.id})}"
+                   class="btn btn-primary action-btn">
+
+                    ✏️ Edit Company
+
+                </a>
+
+
+                <!-- Create Job -->
+
+                <a href="/recruiter/jobs/create"
+                   class="btn btn-success action-btn">
+
+                    ➕ Create Job
+
+                </a>
+
+
+                <!-- My Jobs -->
+
+                <a href="/recruiter/jobs"
+                   class="btn btn-outline-primary action-btn">
+
+                    💼 My Jobs
+
+                </a>
+
+
+                <!-- Companies -->
+
+                <a href="/recruiter/company"
+                   class="btn btn-outline-secondary action-btn">
+
+                    🏢 All Companies
+
+                </a>
+
+
+                <!-- Dashboard -->
+
+                <a href="/recruiter/dashboard"
+                   class="btn btn-outline-dark action-btn">
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>

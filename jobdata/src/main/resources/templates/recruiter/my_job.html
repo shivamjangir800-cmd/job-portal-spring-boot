@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Jobs</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: #212529;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 13px 20px;
+        }
+
+        .sidebar a:hover {
+            background: #343a40;
+        }
+
+        .job-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .status-active {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-closed {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- SIDEBAR -->
+
+        <div class="col-md-2 sidebar p-0">
+
+            <h3 class="text-white text-center py-4">
+                Recruiter
+            </h3>
+
+            <a th:href="@{/recruiter/dashboard}">
+                🏠 Dashboard
+            </a>
+
+            <a th:href="@{/recruiter/jobs}">
+                💼 My Jobs
+            </a>
+
+            <a th:href="@{/recruiter/jobs/create}">
+                ➕ Post New Job
+            </a>
+
+            <a th:href="@{/recruiter/applicants}">
+                👥 Applicants
+            </a>
+
+            <a th:href="@{/recruiter/profile}">
+                👤 My Profile
+            </a>
+
+            <form th:action="@{/logout}"
+                  method="post"
+                  class="mt-3">
+
+                <button type="submit"
+                        class="btn btn-danger w-100">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- MAIN CONTENT -->
+
+        <div class="col-md-10 p-4">
+
+            <!-- HEADER -->
+
+            <div class="d-flex justify-content-between
+                        align-items-center mb-4">
+
+                <div>
+
+                    <h2 class="fw-bold">
+                        My Jobs
+                    </h2>
+
+                    <p class="text-muted">
+                        Manage jobs posted by you
+                    </p>
+
+                </div>
+
+                <a th:href="@{/recruiter/jobs/create}"
+                   class="btn btn-primary">
+
+                    + Post New Job
+
+                </a>
+
+            </div>
+
+
+            <!-- JOB LIST -->
+
+            <div class="row"
+                 th:if="${jobs != null and !jobs.isEmpty()}">
+
+                <div class="col-lg-6 mb-4"
+                     th:each="job : ${jobs}">
+
+                    <div class="card job-card h-100">
+
+                        <div class="card-body">
+
+                            <!-- TITLE -->
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-start">
+
+                                <div>
+
+                                    <h4 class="fw-bold"
+                                        th:text="${job.title}">
+                                        Java Developer
+                                    </h4>
+
+                                    <p class="text-muted mb-2">
+
+                                        📍
+                                        <span th:text="${job.location}">
+                                            Jaipur
+                                        </span>
+
+                                    </p>
+
+                                </div>
+
+
+                                <!-- STATUS -->
+
+                                <span class="badge status-active"
+                                      th:if="${job.status == 'ACTIVE'}"
+                                      th:text="${job.status}">
+                                    ACTIVE
+                                </span>
+
+                                <span class="badge status-closed"
+                                      th:if="${job.status != 'ACTIVE'}"
+                                      th:text="${job.status}">
+                                    CLOSED
+                                </span>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <!-- DESCRIPTION -->
+
+                            <p class="text-muted"
+                               th:text="${job.description}">
+                                Job description
+                            </p>
+
+
+                            <!-- JOB INFORMATION -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-6">
+
+                                    <strong>Salary</strong>
+
+                                    <p class="text-success">
+                                        ₹
+                                        <span th:text="${job.salary}">
+                                            500000
+                                        </span>
+                                    </p>
+
+                                </div>
+
+
+                                <div class="col-6">
+
+                                    <strong>Experience</strong>
+
+                                    <p th:text="${job.experience}">
+                                        Fresher
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- SKILLS -->
+
+                            <div class="mb-3">
+
+                                <strong>Skills</strong>
+
+                                <p class="text-muted"
+                                   th:text="${job.skills}">
+                                    Java, Spring Boot, MySQL
+                                </p>
+
+                            </div>
+
+
+                            <!-- APPLICATION COUNT -->
+
+                            <div class="alert alert-info">
+
+                                👥 Applications:
+
+                                <strong
+                                    th:text="${applicationCounts[job.id]}">
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                            <!-- BUTTONS -->
+
+                            <div class="d-flex gap-2">
+
+
+                                <a th:href="@{/recruiter/jobs/edit/{id}(id=${job.id})}"
+                                   class="btn btn-outline-warning">
+
+                                    Edit
+
+                                </a>
+
+
+                                <a th:href="@{/recruiter/applicants}"
+                                   class="btn btn-outline-success">
+
+                                    Applicants
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPTY STATE -->
+
+            <div th:if="${jobs == null or jobs.isEmpty()}"
+                 class="text-center mt-5">
+
+                <div class="card border-0 shadow-sm p-5">
+
+                    <h3>
+                        No Jobs Found
+                    </h3>
+
+                    <p class="text-muted">
+                        You haven't posted any jobs yet.
+                    </p>
+
+                    <div>
+
+                        <a th:href="@{/recruiter/jobs/create}"
+                           class="btn btn-primary">
+
+                            Post Your First Job
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
